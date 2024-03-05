@@ -20,6 +20,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void Button_Equal_Click();
+    void Button_Delete_Click();
+    void Button_Cancel_Click();
 
 private:
     Ui::MainWindow *ui;

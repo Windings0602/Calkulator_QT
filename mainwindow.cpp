@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "string"
-#include "QString"
+#include <string>
+#include <QString>
 
 void MainWindow::Button_Input_Click(string s){
     ui->Input->setText(ui->Input->text()+QString::fromStdString(s));
@@ -14,6 +14,20 @@ void MainWindow::Button_Equal_Click(){
     ui->Output->setText(QString::fromStdString(strResult));
 }
 
+
+void MainWindow::Button_Delete_Click(){
+    QString input = ui->Input->text();
+    if(input.size() == 0){
+        return;
+    }
+    input.chop(1);
+    ui->Input->setText(input);
+}
+
+
+void MainWindow::Button_Cancel_Click(){
+    ui->Input->setText("");
+}
 
 
 
@@ -47,6 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->b_point, &QPushButton::clicked, this, [this](){this->Button_Input_Click(".");});
     connect(ui->b_braket_close, &QPushButton::clicked, this, [this](){this->Button_Input_Click(")");});
     connect(ui->b_braket_open, &QPushButton::clicked, this, [this](){this->Button_Input_Click("(");});
+    connect(ui->b_DELETE, &QPushButton::clicked, this, [this](){this->Button_Delete_Click();});
+    connect(ui->b_cancel, &QPushButton::clicked, this, [this](){this->Button_Cancel_Click();});
 }
 
 
