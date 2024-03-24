@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0">
     <item>
      <widget class="QLineEdit" name="Input">
       <property name="sizePolicy">
@@ -29,6 +29,9 @@
      </widget>
     </item>
     <item>
+     <widget class="QSpinBox" name="Input_base"/>
+    </item>
+    <item>
      <widget class="QLineEdit" name="Output">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -37,6 +40,9 @@
        </sizepolicy>
       </property>
      </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="Output_base"/>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_7">

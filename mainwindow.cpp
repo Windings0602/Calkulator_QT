@@ -2,16 +2,76 @@
 #include "ui_mainwindow.h"
 #include <string>
 #include <QString>
+#include "number.h"
+#include <QDebug>
+
+
+bool IsOperator(char c){
+    if(c == '+' || c == '-' || c == '/' || c == '*' || c =='^' || c == '(' || c == ')'){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 
 void MainWindow::Button_Input_Click(string s){
     ui->Input->setText(ui->Input->text()+QString::fromStdString(s));
 
 }
 void MainWindow::Button_Equal_Click(){
-    string input = ui->Input->text().toStdString();
-    double result = Calkulator.Run(input);
-    string strResult = to_string(result);
-    ui->Output->setText(QString::fromStdString(strResult));
+    try{
+        int tochnost;
+        string calkstr= "";
+        string input = ui->Input->text().toStdString();
+        string tempstr = "";
+        for(auto i: input){
+            if(IsOperator(i)){
+                if(tempstr.size() != 0){
+                    if(tempstr.find('.') == string::npos){
+                        tochnost = 0;
+                    }
+                    else{
+                        tochnost = 6;
+                        if(count(tempstr.begin(), tempstr.end(), '.') > 1){
+                            ui->Output->setText("eror");
+                            return;
+                        }
+                    }
+                    Number num(tempstr, ui->Input_base->text().toStdString(), tochnost);
+                    calkstr += to_string(num.getNumber());
+                }
+                tempstr = "";
+                calkstr += i;
+            }
+            else if(!IsOperator(i)){
+                tempstr += i;
+            }
+        }
+        if(tempstr.size() != 0){
+            if(tempstr.find('.') == string::npos){
+                tochnost = 0;
+            }
+            else{
+                tochnost = 6;
+                if(count(tempstr.begin(), tempstr.end(), '.') > 1){
+                    ui->Output->setText("eror");
+                    return;
+                }
+            }
+            Number num(tempstr, ui->Input_base->text().toStdString(), tochnost);
+            calkstr += to_string(num.getNumber());
+        }
+        qDebug() << QString::fromStdString(calkstr);
+        double result = Calkulator.Run(calkstr);
+        Number num(to_string(result), "10", tochnost);
+        string s = num.Tobase(stoi(ui->Output_base->text().toStdString()));
+        string strResult = to_string(result);
+        ui->Output->setText(QString::fromStdString(s));
+    }
+    catch(...)
+    {ui->Output->setText("error");}
 }
 
 
@@ -28,7 +88,6 @@ void MainWindow::Button_Delete_Click(){
 void MainWindow::Button_Cancel_Click(){
     ui->Input->setText("");
 }
-
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -63,6 +122,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->b_braket_open, &QPushButton::clicked, this, [this](){this->Button_Input_Click("(");});
     connect(ui->b_DELETE, &QPushButton::clicked, this, [this](){this->Button_Delete_Click();});
     connect(ui->b_cancel, &QPushButton::clicked, this, [this](){this->Button_Cancel_Click();});
+
+    ui->Input_base->setMinimum(2);
+    ui->Input_base->setMaximum(16);
+    ui->Output_base->setMaximum(16);
+    ui->Output_base->setMinimum(2);
 }
 
 
